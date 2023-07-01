@@ -96,6 +96,10 @@ def view_blogs():
 @app.route('/blogs/create')
 def create_blog():
 	return render_template('blogs/add.html')
+
+@app.route('/blogs/edit')
+def create_blog():
+	return render_template('blogs/edit.html')
 # Running Flask Application
 if __name__ == '__main__':
 	app.run(debug=True,port=9000)
