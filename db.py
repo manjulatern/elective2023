@@ -6,9 +6,9 @@ class DBConnection():
 		print("Connecting to database.....")
 		conn = pymysql.connect(
 				host='localhost',
-				user='root',
-				password='',
-				db='elective2023'
+				user='manjul',
+				password='Manjul1234*',
+				db='elective'
 			)
 
 		cur = conn.cursor()

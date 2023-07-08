@@ -1,12 +1,13 @@
 # import flask module
-from flask import Flask, render_template,request,redirect,flash,url_for
+from flask import Flask, render_template,request,redirect
+
 import pymysql
 
 from db import DBConnection
 
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = 'roshan'
+
 @app.route('/',methods=['GET','POST'])
 def login():
 	if request.method == 'POST':
@@ -96,31 +97,6 @@ def view_blogs():
 def create_blog():
 	return render_template('blogs/add.html')
 
-@app.route('/addblog', methods=['GET', 'POST'])
-def add_blog():
-    if request.method == 'POST':
-        email = request.form["email"]
-        title = request.form["title"]
-        slug = request.form["slug"]
-        dbConn = DBConnection()
-        conn, cur = dbConn.mysqlconnect()
-        status = 0
-        query = "SELECT id FROM users WHERE username = %s"
-        cur.execute(query, (email,))
-        output = cur.fetchall()
-        for row in output:
-            id = row[0]
-            query = "INSERT INTO `blogs` (`name`, `slug`, `status`, `user_id`) VALUES ('%s', '%s', '%s', '%s');" % (
-                title, slug, status, id)
-            print(query)
-            cur.execute(query)
-        conn.commit()
-        conn.close()
-        flash('Blog added successfully!', 'success')  # Flash the success message
-    else:
-      flash('cant be created!, failed!!') 
-        
-    return redirect(url_for('view_blogs'))
 @app.route('/blogs/edit')
 def edit_blog():
 	return render_template('blogs/edit.html')
