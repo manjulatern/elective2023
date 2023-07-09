@@ -5,6 +5,8 @@ import pymysql
 
 from db import DBConnection
 
+import datetime
+
 # Initialize Flask app
 app = Flask(__name__)
 
@@ -93,22 +95,46 @@ def view_blogs():
 	# Pass data to frontend	
 	return render_template('blogs/list.html',blogs=output)
 
-@app.route('/blogs/create')
+@app.route('/blogs/create',methods=['POST','GET'])
 def create_blog():
 
 	# Initialize DB Connection
 	dbConn = DBConnection()
 	conn,cur = dbConn.mysqlconnect()
 
-	# SQL Query for selecting all blogs
-	query = '''SELECT * FROM users; '''
-	
-	print(query)
-	cur.execute(query)
-	output = cur.fetchall()
-	conn.close()
+	if request.method == 'GET':
+		# SQL Query for selecting all blogs
+		query = '''SELECT * FROM users; '''		
+		cur.execute(query)
+		output = cur.fetchall()
+		conn.close()
+		return render_template('blogs/add.html',users=output)
+	else:
+		a_title = request.form['title']
+		a_slug = request.form['slug']
+		a_content = request.form['content']
+		a_status = request.form['status']
+		a_user = request.form['user']
 
-	return render_template('blogs/add.html',users=output)
+		a_created_at = datetime.datetime.now()
+
+		query = '''INSERT INTO `blogs`
+								(`name`,
+								`slug`,
+								`created_at`,
+								`status`,
+								`user_id`,
+								`content`)
+					VALUES      ('%s',
+								'%s',
+								'%s',
+								'%s',
+								'%s',
+								'%s'); '''	% (a_title,a_slug,a_created_at,a_status,a_user,a_content)	
+		cur.execute(query)
+		conn.commit()
+		conn.close()
+		return redirect('/blogs')
 
 @app.route('/blogs/edit')
 def edit_blog():

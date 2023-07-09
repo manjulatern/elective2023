@@ -15,7 +15,7 @@ Create Blogs - My Project
         </span>
     </div>
     <div>
-        <form action="blogs/create" method="POST">
+        <form action="/blogs/create" method="POST">
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
               <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title" name="title">
@@ -26,11 +26,18 @@ Create Blogs - My Project
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Content</label>
-              <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="content">
+              <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Content" name="content">
                 </textarea>
             </div>
             <div>
-              <select class="form-select form-control" aria-label="Default select example">
+              <select class="form-select form-control" aria-label="Default select example" name="status">
+                <option selected>Select Status</option>
+                <option value="0">Active</option>
+                <option value="1">InActive</option>
+              </select>
+            </div>
+            <div>
+              <select class="form-select form-control" aria-label="Default select example" name="user">
                 <option selected>Select User</option>
                 {% for user in users %}
                 <option value="{{user.0}}">{{user.1}} {{user.2}}</option>
