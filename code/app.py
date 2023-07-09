@@ -95,7 +95,20 @@ def view_blogs():
 
 @app.route('/blogs/create')
 def create_blog():
-	return render_template('blogs/add.html')
+
+	# Initialize DB Connection
+	dbConn = DBConnection()
+	conn,cur = dbConn.mysqlconnect()
+
+	# SQL Query for selecting all blogs
+	query = '''SELECT * FROM users; '''
+	
+	print(query)
+	cur.execute(query)
+	output = cur.fetchall()
+	conn.close()
+
+	return render_template('blogs/add.html',users=output)
 
 @app.route('/blogs/edit')
 def edit_blog():
