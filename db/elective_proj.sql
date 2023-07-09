@@ -29,8 +29,9 @@ CREATE TABLE `blogs` (
   `created_at` datetime DEFAULT NULL,
   `status` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
+  `content` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +40,7 @@ CREATE TABLE `blogs` (
 
 LOCK TABLES `blogs` WRITE;
 /*!40000 ALTER TABLE `blogs` DISABLE KEYS */;
-INSERT INTO `blogs` VALUES (1,'My First Blog','/my-first-blog','2023-07-01 10:07:15',1,1),(2,'Introduction to Python','/intro-to-python','2023-06-28 10:07:15',0,4);
+INSERT INTO `blogs` VALUES (1,'My First Blog','/my-first-blog','2023-07-01 10:07:15',1,1,NULL),(2,'Introduction to Python','/intro-to-python','2023-06-28 10:07:15',0,4,NULL),(4,'Another Blog','/another-blog','2023-07-06 10:07:15',0,1,NULL),(5,'Blog 1','/blog1','2023-07-08 09:54:05',1,1,NULL),(6,'Blog2','/blog2','2023-07-08 09:54:19',1,4,NULL),(7,'Test Blog','/test-blog','2023-07-09 08:28:05',0,1,'This is a test blog                ');
 /*!40000 ALTER TABLE `blogs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,7 +68,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Manjul','Bhattarai','manjul@gmail.com','pass','1'),(4,'Harkesh','Kathayat','harkesh@gmail.com','pass',NULL);
+INSERT INTO `users` VALUES (1,'Manjul','Bhattarai','manjul@gmail.com','pass','1'),(4,'Harkesh','Kathayat','harkesh@gmail.com','pass','1');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -80,4 +81,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-01 11:03:00
+-- Dump completed on 2023-07-09  8:30:24
