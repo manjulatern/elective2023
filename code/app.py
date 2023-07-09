@@ -81,8 +81,10 @@ def view_blogs():
 					b.slug as blog_slug,
 					b.created_at,
 					b.status,
+					u.id as user_id,
 					u.first_name,
-					u.last_name
+					u.last_name,
+					b.content
 				FROM   blogs b
 					JOIN users u
 						ON u.id = b.user_id; '''
@@ -144,18 +146,38 @@ def edit_blog(id):
 		conn,cur = dbConn.mysqlconnect()
 
 		# SQL Query for selecting all blogs
-		query = '''SELECT * FROM blogs WHERE id = %s ''' % id
+		query = '''SELECT b.id as blog_id,
+					b.name as title,
+					b.slug as blog_slug,
+					b.created_at,
+					b.status,
+					u.first_name,
+					u.last_name
+				FROM   blogs b
+					JOIN users u
+						ON u.id = b.user_id
+						AND b.id =  %s; ''' % (id)
 		
-		print(query)
 		cur.execute(query)
 		output = cur.fetchone()
 		print(output)
+
+		# SQL Query for selecting all blogs
+		query1 = '''SELECT * FROM users; '''
+		
+		cur.execute(query1)
+		output1 = cur.fetchall()
+
 		conn.close()
 
-
-		return render_template('blogs/edit.html',blog=output)
+		return render_template('blogs/edit.html',blog=output,users=output1)
 	else:
+		
+		# TODO Get Input
+		# TODO Update Query
+
 		return redirect('/blogs')
+
 # Running Flask Application
 if __name__ == '__main__':
 	app.run(debug=True,port=9000)

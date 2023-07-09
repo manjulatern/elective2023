@@ -27,7 +27,7 @@ Edit Blogs - My Project
             <div class="form-group">
               <label for="exampleInputEmail1">Content</label>
               <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Content" name="content">
-                {{blog.6}}
+                {{blog.7}}
                 </textarea>
             </div>
             <input type="hidden" value="{{blog.0}}">
@@ -44,6 +44,8 @@ Edit Blogs - My Project
             <div>
               <select class="form-select form-control" aria-label="Default select example" name="user">
                 <option selected>Select User</option>
+                
+                <option value="{{blog.4}}" selected>{{blog.5}} {{blog.6}}</option>
                 {% for user in users %}
                 <option value="{{user.0}}">{{user.1}} {{user.2}}</option>
                 {% endfor %}
