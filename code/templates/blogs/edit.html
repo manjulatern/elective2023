@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Edit Blogs - My Project
+{% endblock %}
+
+{% block body_content%}
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Blogs | Edit </h1>
+        <span>
+            <a href="/blogs" class="btn btn-primary">
+                <span class="text">View Blogs</span>
+            </a>
+        </span>
+    </div>
+    <div>
+        <form action="/blogs/edit" method="POST">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Title</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title" name="title" value="{{blog.1}}">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Slug</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter slug" name="slug" value="{{blog.2}}">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Content</label>
+              <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Content" name="content">
+                {{blog.6}}
+                </textarea>
+            </div>
+            <input type="hidden" value="{{blog.0}}">
+            <div>
+              <select class="form-select form-control" aria-label="Default select example" name="status">
+                <option selected>Select Status</option>
+                {% if blog.4 == 1 %}
+                <option value="0" selected>Active</option>
+                {% else %}
+                <option value="1" selected>InActive</option>
+                {% endif %}
+              </select>
+            </div>
+            <div>
+              <select class="form-select form-control" aria-label="Default select example" name="user">
+                <option selected>Select User</option>
+                {% for user in users %}
+                <option value="{{user.0}}">{{user.1}} {{user.2}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            
+            <br/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>
+</div>
+{% endblock %}  

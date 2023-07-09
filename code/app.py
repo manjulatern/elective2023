@@ -136,9 +136,26 @@ def create_blog():
 		conn.close()
 		return redirect('/blogs')
 
-@app.route('/blogs/edit')
-def edit_blog():
-	return render_template('blogs/edit.html')
+@app.route('/edit-blog/<int:id>',methods=['GET','POST'])
+def edit_blog(id):
+	if request.method == 'GET':
+		# Initialize DB Connection
+		dbConn = DBConnection()
+		conn,cur = dbConn.mysqlconnect()
+
+		# SQL Query for selecting all blogs
+		query = '''SELECT * FROM blogs WHERE id = %s ''' % id
+		
+		print(query)
+		cur.execute(query)
+		output = cur.fetchone()
+		print(output)
+		conn.close()
+
+
+		return render_template('blogs/edit.html',blog=output)
+	else:
+		return redirect('/blogs')
 # Running Flask Application
 if __name__ == '__main__':
 	app.run(debug=True,port=9000)
