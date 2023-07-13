@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block title%}
-Create Blogs - My Project
+Edit Blogs - My Project
 {% endblock %}
 
 {% block body_content%}
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Blogs | Create </h1>
+        <h1 class="h3 mb-0 text-gray-800">Blogs | Edit </h1>
         <span>
             <a href="/blogs" class="btn btn-primary">
                 <span class="text">View Blogs</span>
@@ -15,30 +15,38 @@ Create Blogs - My Project
         </span>
     </div>
     <div>
-        <form action="/blogs/create" method="POST">
+        <form action="/update-blog" method="POST">
+            <input type="hidden" name="blog_id" value="{{blog.0}}">
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
-              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title" name="title">
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title" name="title" value="{{blog.1}}">
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Slug</label>
-              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter slug" name="slug">
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter slug" name="slug" value="{{blog.2}}">
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Content</label>
               <textarea type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Content" name="content">
+                {{blog.7}}
                 </textarea>
             </div>
+            <input type="hidden" value="{{blog.0}}">
             <div>
               <select class="form-select form-control" aria-label="Default select example" name="status">
                 <option selected>Select Status</option>
-                <option value="0">Active</option>
-                <option value="1">InActive</option>
+                {% if blog.4 == 1 %}
+                <option value="0" selected>Active</option>
+                {% else %}
+                <option value="1" selected>InActive</option>
+                {% endif %}
               </select>
             </div>
             <div>
               <select class="form-select form-control" aria-label="Default select example" name="user">
                 <option selected>Select User</option>
+                
+                <option value="{{blog.4}}" selected>{{blog.5}} {{blog.6}}</option>
                 {% for user in users %}
                 <option value="{{user.0}}">{{user.1}} {{user.2}}</option>
                 {% endfor %}
@@ -50,8 +58,7 @@ Create Blogs - My Project
           </form>
     </div>
 </div>
-{% endblock %}
-
+{% endblock %} 
 {% block js_block%}
 <script src="https://cdn.tiny.cloud/1/c5vbgy7k4cfrhy4815qesauz1v9kpen45i75iyf9x0njlmid/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
@@ -61,4 +68,4 @@ Create Blogs - My Project
       toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
     });
   </script>
-{% endblock %}
+{% endblock %} 

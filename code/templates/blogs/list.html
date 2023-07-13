@@ -30,7 +30,7 @@ Blogs - My Project
             <tbody>
                 {% for blog in blogs %}
                 <tr>
-                    <th scope="row">{{ blog.0 }}</th>
+                    <th scope="row">{{ loop.index }}</th>
                     <td>{{ blog.1 }}</td>
                     <td>{{ blog.2 }}</td>
                     <td>{{ blog.3 }}</td>
@@ -46,16 +46,17 @@ Blogs - My Project
                         {% endif %}
                         
                     </td>
-                    <td>{{ blog.5 }} {{ blog.6 }}</td>
+                    <td>{{ blog.6 }} {{ blog.7 }}</td>
                     <td>
                         <a href="#" class="btn btn-primary btn-circle">
                             <i class="fa fa-eye"></i>
                         </a>
                         
-                        <a href="#" class="btn btn-info btn-circle">
+                        <a href="/edit-blog/{{blog.0}}" class="btn btn-info btn-circle">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <a href="#" class="btn btn-danger btn-circle">
+                        <a href="/delete-blog/{{blog.0}}" class="btn btn-danger btn-circle"
+                            onclick="return confirm('Are you sure you want to delete?')">
                             <i class="fa fa-trash"></i>
                         </a>
                     </td>

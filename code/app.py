@@ -5,6 +5,8 @@ import pymysql
 
 from db import DBConnection
 
+import datetime
+
 # Initialize Flask app
 app = Flask(__name__)
 
@@ -79,8 +81,10 @@ def view_blogs():
 					b.slug as blog_slug,
 					b.created_at,
 					b.status,
+					u.id as user_id,
 					u.first_name,
-					u.last_name
+					u.last_name,
+					b.content
 				FROM   blogs b
 					JOIN users u
 						ON u.id = b.user_id; '''
@@ -93,13 +97,135 @@ def view_blogs():
 	# Pass data to frontend	
 	return render_template('blogs/list.html',blogs=output)
 
-@app.route('/blogs/create')
+@app.route('/blogs/create',methods=['POST','GET'])
 def create_blog():
-	return render_template('blogs/add.html')
 
-@app.route('/blogs/edit')
-def edit_blog():
-	return render_template('blogs/edit.html')
+	# Initialize DB Connection
+	dbConn = DBConnection()
+	conn,cur = dbConn.mysqlconnect()
+
+	if request.method == 'GET':
+		# SQL Query for selecting all blogs
+		query = '''SELECT * FROM users; '''		
+		cur.execute(query)
+		output = cur.fetchall()
+		conn.close()
+		return render_template('blogs/add.html',users=output)
+	else:
+		a_title = request.form['title']
+		a_slug = request.form['slug']
+		a_content = request.form['content']
+		a_status = request.form['status']
+		a_user = request.form['user']
+
+		a_created_at = datetime.datetime.now()
+
+		query = '''INSERT INTO `blogs`
+								(`name`,
+								`slug`,
+								`created_at`,
+								`status`,
+								`user_id`,
+								`content`)
+					VALUES      ('%s',
+								'%s',
+								'%s',
+								'%s',
+								'%s',
+								'%s'); '''	% (a_title,a_slug,a_created_at,a_status,a_user,a_content)	
+		cur.execute(query)
+		conn.commit()
+		conn.close()
+		return redirect('/blogs')
+
+@app.route('/edit-blog/<int:id>',methods=['GET'])
+def edit_blog(id):
+	if request.method == 'GET':
+		# Initialize DB Connection
+		dbConn = DBConnection()
+		conn,cur = dbConn.mysqlconnect()
+
+		# SQL Query for selecting all blogs
+		query = '''SELECT b.id as blog_id,
+					b.name as title,
+					b.slug as blog_slug,
+					b.created_at,
+					b.status,
+					u.first_name,
+					u.last_name,
+					b.content
+				FROM   blogs b
+					JOIN users u
+						ON u.id = b.user_id
+						WHERE b.id =  %s; ''' % (id)
+		
+		cur.execute(query)
+		output = cur.fetchone()
+		print(output)
+
+		# SQL Query for selecting all blogs
+		query1 = '''SELECT * FROM users; '''
+		
+		cur.execute(query1)
+		output1 = cur.fetchall()
+
+		conn.close()
+
+		return render_template('blogs/edit.html',blog=output,users=output1)
+	else:
+		
+		# TODO Get Input
+		# TODO Update Query
+
+		return redirect('/blogs')
+
+@app.route('/update-blog',methods=['POST'])
+def update_blog():
+	a_title = request.form['title']
+	a_slug = request.form['slug']
+	a_content = request.form['content']
+	a_status = request.form['status']
+	a_user = request.form['user']
+	a_blog_id = request.form["blog_id"]
+
+
+	# Initialize DB Connection
+	dbConn = DBConnection()
+	conn,cur = dbConn.mysqlconnect()
+
+	query = '''
+			UPDATE `blogs`
+				SET    `name` = '%s',
+				       `slug` = '%s',
+				       `status` = %s,
+				       `content` = '%s',
+				       `user_id` = %s
+				WHERE  `id` = %s; 
+	''' % (a_title,a_slug,a_status,a_content,a_user,a_blog_id)
+
+	cur.execute(query)
+	conn.commit()
+	conn.close()
+
+	return redirect('/blogs')
+
+@app.route('/delete-blog/<int:id>',methods=['GET'])
+def delete_blog(id):
+
+	# Initialize DB Connection
+	dbConn = DBConnection()
+	conn,cur = dbConn.mysqlconnect()
+
+	query = '''DELETE FROM `blogs`
+				WHERE  `id` = %s; 
+			''' % id
+
+	cur.execute(query)
+	conn.commit()
+	conn.close()
+	
+	return redirect('/blogs')
+
 # Running Flask Application
 if __name__ == '__main__':
 	app.run(debug=True,port=9000)
