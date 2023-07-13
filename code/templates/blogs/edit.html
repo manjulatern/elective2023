@@ -15,7 +15,8 @@ Edit Blogs - My Project
         </span>
     </div>
     <div>
-        <form action="/blogs/edit" method="POST">
+        <form action="/update-blog" method="POST">
+            <input type="hidden" name="blog_id" value="{{blog.0}}">
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
               <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title" name="title" value="{{blog.1}}">
@@ -57,4 +58,14 @@ Edit Blogs - My Project
           </form>
     </div>
 </div>
-{% endblock %}  
+{% endblock %} 
+{% block js_block%}
+<script src="https://cdn.tiny.cloud/1/c5vbgy7k4cfrhy4815qesauz1v9kpen45i75iyf9x0njlmid/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+  </script>
+{% endblock %} 

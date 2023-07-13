@@ -51,3 +51,14 @@ Create Blogs - My Project
     </div>
 </div>
 {% endblock %}
+
+{% block js_block%}
+<script src="https://cdn.tiny.cloud/1/c5vbgy7k4cfrhy4815qesauz1v9kpen45i75iyf9x0njlmid/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+  </script>
+{% endblock %}

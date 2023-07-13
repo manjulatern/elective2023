@@ -138,7 +138,7 @@ def create_blog():
 		conn.close()
 		return redirect('/blogs')
 
-@app.route('/edit-blog/<int:id>',methods=['GET','POST'])
+@app.route('/edit-blog/<int:id>',methods=['GET'])
 def edit_blog(id):
 	if request.method == 'GET':
 		# Initialize DB Connection
@@ -152,11 +152,12 @@ def edit_blog(id):
 					b.created_at,
 					b.status,
 					u.first_name,
-					u.last_name
+					u.last_name,
+					b.content
 				FROM   blogs b
 					JOIN users u
 						ON u.id = b.user_id
-						AND b.id =  %s; ''' % (id)
+						WHERE b.id =  %s; ''' % (id)
 		
 		cur.execute(query)
 		output = cur.fetchone()
@@ -177,6 +178,53 @@ def edit_blog(id):
 		# TODO Update Query
 
 		return redirect('/blogs')
+
+@app.route('/update-blog',methods=['POST'])
+def update_blog():
+	a_title = request.form['title']
+	a_slug = request.form['slug']
+	a_content = request.form['content']
+	a_status = request.form['status']
+	a_user = request.form['user']
+	a_blog_id = request.form["blog_id"]
+
+
+	# Initialize DB Connection
+	dbConn = DBConnection()
+	conn,cur = dbConn.mysqlconnect()
+
+	query = '''
+			UPDATE `blogs`
+				SET    `name` = '%s',
+				       `slug` = '%s',
+				       `status` = %s,
+				       `content` = '%s',
+				       `user_id` = %s
+				WHERE  `id` = %s; 
+	''' % (a_title,a_slug,a_status,a_content,a_user,a_blog_id)
+
+	cur.execute(query)
+	conn.commit()
+	conn.close()
+
+	return redirect('/blogs')
+
+@app.route('/delete-blog/<int:id>',methods=['GET'])
+def delete_blog(id):
+
+	# Initialize DB Connection
+	dbConn = DBConnection()
+	conn,cur = dbConn.mysqlconnect()
+
+	query = '''DELETE FROM `blogs`
+				WHERE  `id` = %s; 
+			''' % id
+
+	cur.execute(query)
+	conn.commit()
+	conn.close()
+	
+	return redirect('/blogs')
 
 # Running Flask Application
 if __name__ == '__main__':
