@@ -1,0 +1,2 @@
+ALTER TABLE `blogs`
+MODIFY COLUMN `content` LONGTEXT;
