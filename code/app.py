@@ -1,6 +1,9 @@
 # import flask module
 from flask import Flask, render_template,request,redirect
 
+# For JSON Response
+from flask import jsonify
+
 import pymysql
 
 from db import DBConnection
@@ -225,6 +228,73 @@ def delete_blog(id):
 	conn.close()
 	
 	return redirect('/blogs')
+
+##### ----- API Endpoints --------------------------
+
+@app.route('/api/blogs')
+def api_blogs():
+	response = {}
+	# Initialize DB Connection
+	dbConn = DBConnection()
+	conn,cur = dbConn.mysqlconnect()
+
+	# SQL Query for selecting all blogs
+	query = '''SELECT b.id as blog_id,
+					b.name as title,
+					b.slug as blog_slug,
+					b.created_at,
+					b.status,
+					u.id as user_id,
+					u.first_name,
+					u.last_name,
+					b.content
+				FROM   blogs b
+					JOIN users u
+						ON u.id = b.user_id; '''
+	
+	print(query)
+	cur.execute(query)
+	output = cur.fetchall()
+	conn.close()
+
+	#return render_template('blogs/list.html',blogs=output)
+	return jsonify(output)
+
+@app.route('/api/blogs/create', methods=['POST'])
+def api_blogs_create():
+	json_data = request.get_json()
+
+	a_title = json_data.get('title')
+	a_slug = json_data.get('slug')
+	a_content = json_data.get('content')
+	a_status = json_data.get('status')
+	a_user = json_data.get('user_id')
+
+	a_created_at = datetime.datetime.now()
+
+	# Initialize DB Connection
+	dbConn = DBConnection()
+	conn,cur = dbConn.mysqlconnect()
+	
+	query = '''INSERT INTO `blogs`
+								(`name`,
+								`slug`,
+								`created_at`,
+								`status`,
+								`user_id`,
+								`content`)
+					VALUES      ('%s',
+								'%s',
+								'%s',
+								'%s',
+								'%s',
+								'%s'); '''	% (a_title,a_slug,a_created_at,a_status,a_user,a_content)	
+	cur.execute(query)
+	conn.commit()
+	conn.close()
+
+	response = {"message": "Blog Created Succesfully","status":True}
+	return jsonify(response)
 
 # Running Flask Application
 if __name__ == '__main__':
