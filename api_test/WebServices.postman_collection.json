@@ -1,0 +1,102 @@
+{
+	"variables": [],
+	"info": {
+		"name": "WebServices",
+		"_postman_id": "0adf32db-80a5-51c5-2b6c-f3d08c812175",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Blogs",
+			"request": {
+				"url": "http://127.0.0.1:9000/api/blogs",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Blog",
+			"request": {
+				"url": "http://127.0.0.1:9000/api/blogs/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"Test Blog through API\",\n\t\"slug\": \"/test-blog-through-api\",\n\t\"content\": \"<p> This is a second blog content created through API </p>\",\n\t\"user_id\": 1,\n\t\"status\": 1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"url": "http://127.0.0.1:9000/api/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"manjul@gmail.com\",\n\t\"password\": \"pass\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Blog",
+			"request": {
+				"url": "http://127.0.0.1:9000/api/blogs/update",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 12,\n\t\"title\": \"Re-Updated Second Blog through API\",\n\t\"slug\": \"/re-updated-second-blog-through-api\",\n\t\"content\": \"<p> This is a second blog content created through API </p>\",\n\t\"user_id\": 1,\n\t\"status\": 1,\n\t\"token\": \"3242e249af774bf8a9204f7f0aebfedc\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Blog",
+			"request": {
+				"url": "http://127.0.0.1:9000/api/blogs/delete",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 11\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
