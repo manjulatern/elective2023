@@ -1,0 +1,2 @@
+ALTER TABLE `users` 
+ADD COLUMN `token` VARCHAR(200) NULL AFTER `status`;
